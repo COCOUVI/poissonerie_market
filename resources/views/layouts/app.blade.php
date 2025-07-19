@@ -84,6 +84,7 @@
             }
         }
     </style>
+    @stack('style')
     <!-- Tailwind CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
 
