@@ -16,7 +16,7 @@
                     </h1>
                     <p class="text-xl md:text-2xl mb-8 font-light">Découvrez chaque jour le meilleur de la mer, livré
                         avec passion à votre table.</p>
-                    <a href="#produits"
+                    <a href="{{route('product.all')}}"
                         class="bg-white text-blue-900 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-100 transition inline-block">Voir
                         nos produits</a>
                 </div>
@@ -115,7 +115,7 @@
                 <!-- Add more products as needed -->
             </div>
             <div class="text-center mt-14">
-                <a href="#produits"
+                <a href="{{route('product.all')}}"
                     class="inline-block bg-blue-700 text-white py-3 px-10 rounded-full font-bold shadow-lg hover:bg-blue-900 transition">Voir
                     tous les produits</a>
             </div>

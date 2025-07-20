@@ -11,4 +11,14 @@ class ClientController extends Controller
 
         return view("client.space_client");
     }
+
+    public function Hold_oders(){
+       
+        return view("client.hold_orders");
+    }
+    public function Show_historical(){
+     
+        return view('client.historiques');
+
+    }
 }

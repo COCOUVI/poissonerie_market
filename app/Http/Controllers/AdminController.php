@@ -50,4 +50,10 @@ class AdminController extends Controller
     public function ShowMessages(){
         return view("admin.messages_commments");
     }
+    public function LivraisonPage(){
+        return view('admin.livraison');
+    }
+    public function ShowSettings(){
+        return view("admin.settings");
+    }
 }

@@ -44,7 +44,7 @@
            class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
            {{ request()->routeIs('admin.users') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
             <i class="fas fa-users w-5"></i>
-            <span class="text-sm font-medium">Utilisateurs</span>
+            <span class="text-sm font-medium">Admnistrateurs Secondaires</span>
         </a>
 
         <a href="{{route('admin.messages')}}"
@@ -68,18 +68,11 @@
             <span class="text-sm font-medium">Actualités</span>
         </a>
 
-        <a href=""
+        <a href="{{route('admin.delivery')}}"
            class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
            {{ request()->routeIs('admin.delivery') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
             <i class="fas fa-truck w-5"></i>
             <span class="text-sm font-medium">Livraisons</span>
-        </a>
-
-        <a href=""
-           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
-           {{ request()->routeIs('admin.reports') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
-            <i class="fas fa-chart-bar w-5"></i>
-            <span class="text-sm font-medium">Rapports & Stats</span>
         </a>
 
         <a href="{{route("admin.admins")}}"
@@ -89,14 +82,7 @@
             <span class="text-sm font-medium">Administrateurs</span>
         </a>
 
-        <a href=""
-           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
-           {{ request()->routeIs('admin.security') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
-            <i class="fas fa-shield-alt w-5"></i>
-            <span class="text-sm font-medium">Sécurité</span>
-        </a>
-
-        <a href=""
+        <a href="{{route('admin.settings')}}"
            class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
            {{ request()->routeIs('admin.settings') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
             <i class="fas fa-cog w-5"></i>

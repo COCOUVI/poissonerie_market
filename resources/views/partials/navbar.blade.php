@@ -16,6 +16,7 @@
             <a href="#produits" class="hover:text-blue-600 font-medium transition">Produits</a>
             <a href="#apropos" class="hover:text-blue-600 font-medium transition">À propos</a>
             <a href="#contact" class="hover:text-blue-600 font-medium transition">Contact</a>
+             <a href="{{route('home.cart')}}" class="hover:text-blue-600 font-medium transition">Panier</a>
             @guest
                 <a href="/register" class="hover:text-blue-600 font-medium transition">S'inscrire</a>
                 <a href="/login" class="hover:text-blue-600 font-medium transition">Se connecter</a>

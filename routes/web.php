@@ -3,12 +3,18 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+//ROUTE pour la liste des produits
+Route::get('/listes-produits',[ProductController::class,"ShowProduct"])->name("product.all");
+//route pour le panier
+Route::get('/panier',[ProductController::class,"ShowCart"])->name("home.cart");
+Route::get('/details-produits',[ProductController::class,"ShowDetails"])->name('produits.details');
 //route pour l'authentification
 Route::get('/register', [RegisterController::class, "RegisterPage"]);
 Route::get('/login', [AuthController::class, "LoginPage"]);
@@ -27,9 +33,16 @@ Route::prefix('admin')->group(function () {
     Route::get('/list-utilisateurs',[AdminController::class,"ShowUsers"])->name("admin.users");
     Route::get("/list-commandes",[AdminController::class,"ShowOrders"])->name("admin.orders");
     Route::get('/repondre-messages',[AdminController::class,"ShowMessages"])->name("admin.messages");
+    Route::get('/livraisons-page',[AdminController::class,"LivraisonPage"])->name('admin.delivery');
+    Route::get('/parametres',[AdminController::class,"ShowSettings"])->name('admin.settings');
 });
 
 
 
 //route pour le clinet
-Route::get('/espace-client', [ClientController::class, "ShowClientSpace"]);
+Route::prefix('espace-client')->group(function() {
+ Route::get('/', [ClientController::class, "ShowClientSpace"]);   
+ Route::get('/commandes-en_cours',[ClientController::class,"Hold_oders"])->name("commandes.en_cours");
+ Route::get('/historiques-commande',[ClientController::class,"Show_historical"])->name('commandes.historique');
+});
+
