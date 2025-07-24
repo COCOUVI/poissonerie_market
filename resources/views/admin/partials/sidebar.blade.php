@@ -1,111 +1,93 @@
 <div class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 text-white transform transition-transform duration-300 ease-in-out lg:translate-x-0"
      :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'">
 
-     <!-- Logo -->
-     <div class="flex items-center justify-between p-4 border-b border-slate-700">
-         <!-- Logo + texte -->
-         <div class="flex items-center space-x-3">
-             <!-- Remplace "logo.png" par le chemin correct vers ton image locale -->
-             <img src="{{ asset('images/PHOTO1.jpg') }}" alt="Logo Comptoir"
+    <!-- Logo -->
+    <div class="flex items-center justify-between p-4 border-b border-slate-700">
+        <div class="flex items-center space-x-3">
+            <img src="{{ asset('images/PHOTO1.jpg') }}" alt="Logo Comptoir"
                  class="h-10 w-10 object-cover rounded-full shadow-md" />
+            <div>
+                <h1 class="text-lg font-bold text-white">Comptoir SENAN</h1>
+                <p class="text-sm text-slate-400">Market</p>
+            </div>
+        </div>
+        <button @click="sidebarOpen = false" class="lg:hidden">
+            <i class="fas fa-times text-xl text-white"></i>
+        </button>
+    </div>
 
-             <div>
-                 <h1 class="text-lg font-bold text-white">Comptoir SENAN</h1>
-                 <p class="text-sm text-slate-400">Market</p>
-             </div>
-         </div>
+    <!-- Navigation -->
+    <nav class="mt-8 space-y-1">
 
-         <!-- Bouton fermeture mobile -->
-         <button @click="sidebarOpen = false" class="lg:hidden">
-             <i class="fas fa-times text-xl text-white"></i>
-         </button>
-     </div>
+        <a href="{{ route('admin.dashboard') }}"
+           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
+           {{ request()->routeIs('admin.dashboard') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-home w-5"></i>
+            <span class="text-sm font-medium">Tableau de bord</span>
+        </a>
 
+        <a href="{{route('admin.catalogue')}}"
+           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
+           {{ request()->routeIs('admin.catalogue') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-box w-5"></i>
+            <span class="text-sm font-medium">Catalogue Produits</span>
+        </a>
 
-     <!-- Navigation -->
-     <nav class="mt-8">
-         <button @click="activeSection = 'dashboard'; sidebarOpen = false"
-             class="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-slate-800 transition-colors"
-             :class="activeSection === 'dashboard' ? 'bg-slate-800 border-r-2 border-blue-400' : ''">
-             <i class="fas fa-home w-5"></i>
-             <span class="text-sm font-medium">Tableau de bord</span>
-         </button>
+        <a href="{{route('admin.orders')}}"
+           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
+           {{ request()->routeIs('admin.orders') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-shopping-cart w-5"></i>
+            <span class="text-sm font-medium">Commandes</span>
+        </a>
 
-         <button @click="activeSection = 'products'; sidebarOpen = false"
-             class="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-slate-800 transition-colors"
-             :class="activeSection === 'products' ? 'bg-slate-800 border-r-2 border-blue-400' : ''">
-             <i class="fas fa-box w-5"></i>
-             <span class="text-sm font-medium">Catalogue Produits</span>
-         </button>
+        <a href="{{route('admin.users')}}"
+           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
+           {{ request()->routeIs('admin.users') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-users w-5"></i>
+            <span class="text-sm font-medium">Admnistrateurs Secondaires</span>
+        </a>
 
-         <button @click="activeSection = 'orders'; sidebarOpen = false"
-             class="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-slate-800 transition-colors"
-             :class="activeSection === 'orders' ? 'bg-slate-800 border-r-2 border-blue-400' : ''">
-             <i class="fas fa-shopping-cart w-5"></i>
-             <span class="text-sm font-medium">Commandes</span>
-         </button>
+        <a href="{{route('admin.messages')}}"
+           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
+           {{ request()->routeIs('admin.messages') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-comment w-5"></i>
+            <span class="text-sm font-medium">Messages</span>
+        </a>
 
-         <button @click="activeSection = 'customers'; sidebarOpen = false"
-             class="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-slate-800 transition-colors"
-             :class="activeSection === 'customers' ? 'bg-slate-800 border-r-2 border-blue-400' : ''">
-             <i class="fas fa-users w-5"></i>
-             <span class="text-sm font-medium">Clients</span>
-         </button>
+        <a href="{{route("admin.promotions")}}"
+           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
+           {{ request()->routeIs('admin.promotions') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-percent w-5"></i>
+            <span class="text-sm font-medium">Promotions</span>
+        </a>
 
-         <button @click="activeSection = 'messages'; sidebarOpen = false"
-             class="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-slate-800 transition-colors"
-             :class="activeSection === 'messages' ? 'bg-slate-800 border-r-2 border-blue-400' : ''">
-             <i class="fas fa-comment w-5"></i>
-             <span class="text-sm font-medium">Messages</span>
-         </button>
+        <a href="{{route('admin.news')}}"
+           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
+           {{ request()->routeIs('admin.news') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-newspaper w-5"></i>
+            <span class="text-sm font-medium">Actualités</span>
+        </a>
 
-         <button @click="activeSection = 'promotions'; sidebarOpen = false"
-             class="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-slate-800 transition-colors"
-             :class="activeSection === 'promotions' ? 'bg-slate-800 border-r-2 border-blue-400' : ''">
-             <i class="fas fa-percent w-5"></i>
-             <span class="text-sm font-medium">Promotions</span>
-         </button>
+        <a href="{{route('admin.delivery')}}"
+           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
+           {{ request()->routeIs('admin.delivery') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-truck w-5"></i>
+            <span class="text-sm font-medium">Livraisons</span>
+        </a>
 
-         <button @click="activeSection = 'news'; sidebarOpen = false"
-             class="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-slate-800 transition-colors"
-             :class="activeSection === 'news' ? 'bg-slate-800 border-r-2 border-blue-400' : ''">
-             <i class="fas fa-newspaper w-5"></i>
-             <span class="text-sm font-medium">Actualités</span>
-         </button>
+        <a href="{{route("admin.admins")}}"
+           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
+           {{ request()->routeIs('admin.admins') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-user-plus w-5"></i>
+            <span class="text-sm font-medium">Administrateurs</span>
+        </a>
 
-         <button @click="activeSection = 'delivery'; sidebarOpen = false"
-             class="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-slate-800 transition-colors"
-             :class="activeSection === 'delivery' ? 'bg-slate-800 border-r-2 border-blue-400' : ''">
-             <i class="fas fa-truck w-5"></i>
-             <span class="text-sm font-medium">Livraisons</span>
-         </button>
+        <a href="{{route('admin.settings')}}"
+           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
+           {{ request()->routeIs('admin.settings') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-cog w-5"></i>
+            <span class="text-sm font-medium">Paramètres</span>
+        </a>
 
-         <button @click="activeSection = 'reports'; sidebarOpen = false"
-             class="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-slate-800 transition-colors"
-             :class="activeSection === 'reports' ? 'bg-slate-800 border-r-2 border-blue-400' : ''">
-             <i class="fas fa-chart-bar w-5"></i>
-             <span class="text-sm font-medium">Rapports & Stats</span>
-         </button>
-
-         <button @click="activeSection = 'admins'; sidebarOpen = false"
-             class="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-slate-800 transition-colors"
-             :class="activeSection === 'admins' ? 'bg-slate-800 border-r-2 border-blue-400' : ''">
-             <i class="fas fa-user-plus w-5"></i>
-             <span class="text-sm font-medium">Administrateurs</span>
-         </button>
-
-         <button @click="activeSection = 'security'; sidebarOpen = false"
-             class="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-slate-800 transition-colors"
-             :class="activeSection === 'security' ? 'bg-slate-800 border-r-2 border-blue-400' : ''">
-             <i class="fas fa-shield-alt w-5"></i>
-             <span class="text-sm font-medium">Sécurité</span>
-         </button>
-
-         <button @click="activeSection = 'settings'; sidebarOpen = false"
-             class="w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-slate-800 transition-colors"
-             :class="activeSection === 'settings' ? 'bg-slate-800 border-r-2 border-blue-400' : ''">
-             <i class="fas fa-cog w-5"></i>
-             <span class="text-sm font-medium">Paramètres</span>
-         </button>
-     </nav>
- </div>
+    </nav>
+</div>

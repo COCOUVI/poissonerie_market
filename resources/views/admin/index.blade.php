@@ -187,21 +187,24 @@
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <button
+                        <a href="/admin/ajouter-produits"
                             class="flex items-center space-x-3 p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
                             <i class="fas fa-plus text-blue-600"></i>
                             <span class="font-medium text-blue-900">Ajouter un produit</span>
-                        </button>
-                        <button
+                        </a>
+
+                        <a href="{{ route('promotions.create') }}"
                             class="flex items-center space-x-3 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
                             <i class="fas fa-calendar text-green-600"></i>
                             <span class="font-medium text-green-900">Créer une promotion</span>
-                        </button>
-                        <button
+                        </a>
+
+                        <a href="{{ route('news.create') }}"
                             class="flex items-center space-x-3 p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
                             <i class="fas fa-newspaper text-purple-600"></i>
                             <span class="font-medium text-purple-900">Publier une actualité</span>
-                        </button>
+                        </a>
+
                     </div>
                 </div>
             </div>
