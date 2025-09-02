@@ -1,5 +1,6 @@
 @extends('layouts.app1')
 @section('content')
+
 <main class="p-6 min-h-screen bg-gray-50">
     <div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <!-- Logo -->
@@ -7,11 +8,27 @@
             <img src="{{ asset('images/PHOTO1.jpg') }}" alt="Logo Poissonnerie"
                 class="h-20 w-auto object-contain">
         </div>
+        @if(session('success'))
+    <div class="mb-4 p-3 text-green-800 bg-green-200 rounded">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if($errors->any())
+    <div class="mb-4 p-3 text-red-800 bg-red-200 rounded">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>- {{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 
         <!-- Titre -->
         <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Créer un administrateur</h2>
 
-        <form action="#" method="POST" class="space-y-5">
+        <form action="{{ route('admin.store') }}" method="POST" class="space-y-5">
             @csrf
 
             <!-- Nom -->
@@ -34,6 +51,15 @@
                 <input type="password" id="password" name="password" required
                     class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
             </div>
+            <!-- Confirmation du mot de passe (OBLIGATOIRE si règle confirmed) -->
+            <div>
+                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">
+                    Confirmer le mot de passe
+                </label>
+                <input type="password" id="password_confirmation" name="password_confirmation" required
+                    class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+
 
             <!-- Rôle (admin en hidden) -->
             <input type="hidden" name="role" value="admin">

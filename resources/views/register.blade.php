@@ -11,7 +11,7 @@
         <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Créer un compte</h2>
 
         {{-- Formulaire --}}
-        <form method="POST" action="/register" class="space-y-4">
+        <form method="POST" action="{{ route('register.post') }}" class="space-y-4">
             @csrf
 
             <div>
@@ -47,7 +47,7 @@
 
             <div class="text-sm text-center text-gray-500">
                 Déjà inscrit ?
-                <a href="/login" class="text-blue-600 hover:underline">Connectez-vous ici</a>
+                <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Connectez-vous ici</a>
             </div>
         </form>
     </div>

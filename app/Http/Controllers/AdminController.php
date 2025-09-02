@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\Produit;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -56,4 +59,145 @@ class AdminController extends Controller
     public function ShowSettings(){
         return view("admin.settings");
     }
+    //Afficher la liste des catégories
+    public function listCategories()
+    {
+        $categories = Category::all();
+        return view('admin.list_cat', compact('categories'));
+    }
+
+    // Afficher le formulaire d’ajout
+    public function createCategory()
+    {
+        return view('admin.add_cat');
+    }
+
+    // Enregistrer une catégorie
+    public function storeCategory(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name',
+        ]);
+
+        $cat = new Category();
+        $cat->name = $request->name;
+        $cat->save();
+
+        return redirect()->route('admin.listCategories')->with('success', 'Catégorie ajoutée avec succès ✅');
+    }
+        // Modifier une catégorie
+    public function updateCategory(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $id,
+            'description' => 'nullable|string|max:500',
+        ]);
+
+        $cat = Category::findOrFail($id);
+        $cat->name = $request->name;
+        $cat->description = $request->description;
+        $cat->save();
+
+        return redirect()->route('admin.listCategories')->with('success', 'Catégorie modifiée avec succès ✅');
+    }
+
+
+    // Supprimer une catégorie
+    public function deleteCategory($id)
+    {
+        $cat = Category::findOrFail($id);
+        $cat->delete();
+
+        return redirect()->route('admin.listCategories')->with('success', 'Catégorie supprimée avec succès 🗑️');
+    }
+
+    // ✅ Liste des produits
+    public function listProducts()
+    {
+        $produits = Produit::with('category')->get();
+        $categories = Category::all();
+        
+
+        return view('admin.list_product', compact('produits', 'categories'));
+    }
+
+    // ✅ Ajout d’un produit
+    public function storeProduct(Request $request)
+    {
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'categorie_id' => 'required|exists:categories,id',
+            'prix' => 'required|numeric|min:0',
+            'quantite' => 'required|integer|min:0',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('produits', 'public');
+        }
+
+        Produit::create([
+            'name' => $request->nom,
+            'category_id' => $request->categorie_id,
+            'price' => $request->prix,
+            'stock' => $request->quantite,
+            'description' => $request->description,
+            'image' => $imagePath,
+        ]);
+
+        return redirect()->back()->with('success', 'Produit ajouté avec succès ✅');
+    }
+
+    // ✅ Modification d’un produit
+    public function updateProduct(Request $request, $id)
+    {
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'categorie_id' => 'required|exists:categories,id',
+            'prix' => 'required|numeric|min:0',
+            'quantite' => 'required|integer|min:0',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $produit = Produit::findOrFail($id);
+
+        $imagePath = $produit->image;
+        if ($request->hasFile('image')) {
+            // supprimer l’ancienne image si existe
+            if ($produit->image) {
+                Storage::disk('public')->delete($produit->image);
+            }
+            $imagePath = $request->file('image')->store('produits', 'public');
+        }
+
+        $produit->update([
+            'name' => $request->nom,
+            'category_id' => $request->categorie_id,
+            'price' => $request->prix,
+            'stock' => $request->quantite,
+            'description' => $request->description,
+            'image' => $imagePath,
+        ]);
+
+        return redirect()->back()->with('success', 'Produit modifié avec succès ✏️');
+    }
+
+    // ✅ Suppression d’un produit
+    public function deleteProduct($id)
+    {
+        $produit = Produit::findOrFail($id);
+
+        // Supprimer l’image associée si existe
+        if ($produit->image) {
+            Storage::disk('public')->delete($produit->image);
+        }
+
+        $produit->delete();
+
+        return redirect()->back()->with('success', 'Produit supprimé avec succès 🗑️');
+    }
+
 }

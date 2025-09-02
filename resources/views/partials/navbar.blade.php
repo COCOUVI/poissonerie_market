@@ -10,30 +10,49 @@
                 Comptoir <span class="text-red-400">SENAN</span> Market
             </h1>
         </div>
+        
         <!-- Navigation desktop -->
         <nav class="hidden md:flex items-center space-x-6">
             <a href="/" class="hover:text-blue-600 font-medium transition">Accueil</a>
             <a href="#produits" class="hover:text-blue-600 font-medium transition">Produits</a>
             <a href="#apropos" class="hover:text-blue-600 font-medium transition">À propos</a>
             <a href="#contact" class="hover:text-blue-600 font-medium transition">Contact</a>
-             <a href="{{route('home.cart')}}" class="hover:text-blue-600 font-medium transition">Panier</a>
-            @guest
-                <a href="/register" class="hover:text-blue-600 font-medium transition">S'inscrire</a>
-                <a href="/login" class="hover:text-blue-600 font-medium transition">Se connecter</a>
-                    <a href="/espace-client"
-                        class="hover:text-blue-600 font-medium transition">
-                        Espace client
-                    </a>
-                <form method="POST" action="">
-                    @csrf
-                    <button type="submit"
-                        class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-300">
-                        Déconnexion
-                    </button>
-                </form>
-            @endguest
-        </nav>
 
+            <!-- Panier avec compteur -->
+            <a href="{{ route('cart.show') }}" class="relative">
+                🛒
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                    {{ app('App\Http\Controllers\CartController')->cartCount() }}
+                </span>
+            </a>
+
+
+            <!-- Espace client -->
+            @if(Auth::check() && Auth::user()->role === 'client')
+                <a href="{{ route('Espace_client') }}" 
+                   class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-300">
+                    Espace Client
+                </a>
+            @else
+                <a href="{{ route('login') }}" 
+                   class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-300">
+                    Espace Client
+                </a>
+            @endif
+
+            <!-- Déconnexion -->
+            @auth
+                @if(Auth::user()->role === 'client')
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" 
+                            class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-300">
+                            Déconnexion
+                        </button>
+                    </form>
+                @endif
+            @endauth
+        </nav>
 
         <!-- Menu hamburger mobile -->
         <button class="md:hidden text-2xl text-blue-900" id="menu-toggle">
@@ -47,14 +66,39 @@
         <a href="#produits" class="block py-2 hover:text-blue-600 font-medium">Produits</a>
         <a href="#apropos" class="block py-2 hover:text-blue-600 font-medium">À propos</a>
         <a href="#contact" class="block py-2 hover:text-blue-600 font-medium">Contact</a>
-        @guest
-            <a href="/register" class="block py-2 hover:text-blue-600 font-medium">S'inscrire</a>
-            <a href="/login" class="block py-2 hover:text-blue-600 font-medium">Se connecter</a>
-        @else
-            <form method="POST" action="">
-                @csrf
-                <button type="submit" class="w-full text-left py-2 hover:text-red-700 font-medium">Déconnexion</button>
-            </form>
-        @endguest
+
+        <!-- Panier mobile -->
+        <a href="{{ route('cart.show') }}" class="relative">
+                🛒
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                    {{ app('App\Http\Controllers\CartController')->cartCount() }}
+                </span>
+            </a>
+
+        <!-- Espace client -->
+            @if(Auth::check() && Auth::user()->role === 'client')
+                <a href="{{ route('Espace_client') }}" 
+                   class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-300">
+                    Espace Client
+                </a>
+            @else
+                <a href="{{ route('login') }}" 
+                   class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-300">
+                    Espace Client
+                </a>
+            @endif
+
+            <!-- Déconnexion -->
+            @auth
+                @if(Auth::user()->role === 'client')
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" 
+                            class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-300">
+                            Déconnexion
+                        </button>
+                    </form>
+                @endif
+            @endauth
     </div>
 </header>

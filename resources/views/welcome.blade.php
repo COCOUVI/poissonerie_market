@@ -22,7 +22,7 @@
                 </div>
                 <div class="md:w-1/3 mt-10 md:mt-0 flex justify-center">
                     <!-- Poisson animé avec une meilleure image -->
-                    <img src="/images/vue.png" alt="Poisson SVG animé" class="w-48 fish-anim">
+                    <img src="/images/poi.png" alt="Poisson SVG animé" class="w-48 fish-anim">
                 </div>
             </div>
         </div>
@@ -55,72 +55,112 @@
     </section>
 
     <!-- Products Section -->
-    <section id="produits" class="py-20 bg-gradient-to-b from-blue-50 to-blue-100">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-extrabold text-center mb-14 text-blue-900">Nos Produits Vedettes</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-                <!-- Example product cards, replace with dynamic content if needed -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition group">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Scaus_u0.gif/330px-Scaus_u0.gif"
-                        alt="Saloumon" class="w-full h-48 object-cover group-hover:scale-110 transition">
-                    <div class="p-5">
-                        <h3 class="font-bold text-xl mb-1 text-blue-900">Saloumon</h3>
-                        <p class="text-gray-500 mb-3 text-sm">Le maquereau, poisson populaire et savoureux.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-blue-700">1600 FCFA/kg</span>
-                            <button
-                                class="bg-blue-700 text-white py-1 px-4 rounded-full font-semibold hover:bg-blue-900 transition">Commander</button>
+    <!-- Products Section -->
+        <section id="produits" class="py-20 bg-gradient-to-b from-blue-50 to-blue-100">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-extrabold text-center mb-14 text-blue-900">Nos Produits Vedettes</h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+                    @php
+                        // Récupérer 4 produits de catégories différentes si possible
+                        $vedettes = $produits->groupBy('category_id')->take(4)->flatten();
+                    @endphp
+
+                    @forelse($vedettes as $produit)
+                        <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition group">
+                            <img src="{{ $produit->image ? asset('storage/'.$produit->image) : 'https://via.placeholder.com/300x200' }}"
+                                alt="{{ $produit->name }}" class="w-full h-48 object-cover group-hover:scale-110 transition">
+                            <div class="p-5 flex flex-col justify-between h-full">
+                                <div>
+                                    <h3 class="font-bold text-xl mb-1 text-blue-900">{{ $produit->name }}</h3>
+                                    <p class="text-gray-500 mb-3 text-sm">{{ Str::limit($produit->description, 60, '...') }}</p>
+                                    <span class="font-bold text-blue-700">{{ number_format($produit->price, 0, ',', ' ') }} FCFA/kg</span>
+                                
+                                    <div class="flex justify-between mt-3">
+                                        <!-- Bouton Voir -->
+                                        <button onclick="openDetailsModal({{ $produit->id }})"
+                                            class="bg-gray-200 text-gray-800 py-1 px-2 text-xs rounded-full font-semibold hover:bg-gray-300 transition">
+                                            Voir
+                                        </button>
+
+                                        <!-- Bouton Commander -->
+                                        <form action="{{ route('cart.add', $produit->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit"
+                                                class="bg-blue-700 text-white py-1 px-2 text-xs rounded-full font-semibold hover:bg-blue-900 transition">
+                                                Commander
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                
+
+                            </div>
                         </div>
-                    </div>
+                    @empty
+                        <p class="col-span-4 text-center text-gray-500">Aucun produit disponible pour le moment.</p>
+                    @endforelse
                 </div>
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition group">
-                    <img src="https://www.frais-livre.fr/1408-home_default/chinchard-095-105-kg.jpg" alt="Chinchard"
-                        class="w-full h-48 object-cover group-hover:scale-110 transition">
-                    <div class="p-5">
-                        <h3 class="font-bold text-xl mb-1 text-blue-900">Chinchard</h3>
-                        <p class="text-gray-500 mb-3 text-sm">Chinchard frais, pêche durable.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-blue-700">€39.99/kg</span>
-                            <button
-                                class="bg-blue-700 text-white py-1 px-4 rounded-full font-semibold hover:bg-blue-900 transition">Commander</button>
-                        </div>
-                    </div>
+
+                <div class="text-center mt-14">
+                    <a href="{{ route('product.all') }}"
+                    class="inline-block bg-blue-700 text-white py-3 px-10 rounded-full font-bold shadow-lg hover:bg-blue-900 transition">
+                        Voir tous les produits
+                    </a>
                 </div>
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition group">
-                    <img src="https://www.koudijs.com/globalassets/animal-nutrition/animals/aqua/de-heus-animal-nutrition_aqua_black-tilapia_group.jpg?mode=crop&width=600&height=435"
-                        alt="Tilapia" class="w-full h-48 object-cover group-hover:scale-110 transition">
-                    <div class="p-5">
-                        <h3 class="font-bold text-xl mb-1 text-blue-900">Tilapia</h3>
-                        <p class="text-gray-500 mb-3 text-sm">Tilapia frais, chair tendre et délicate.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-blue-700">€29.99/kg</span>
-                            <button
-                                class="bg-blue-700 text-white py-1 px-4 rounded-full font-semibold hover:bg-blue-900 transition">Commander</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition group">
-                    <img src="https://i0.wp.com/cook.saveurdafrique.ca/wp-content/uploads/2023/04/342CE42A-6423-4591-8FF3-60AF66E2DCA2.png?resize=300%2C300&ssl=1"
-                        alt="Faux Bar" class="w-full h-48 object-cover group-hover:scale-110 transition">
-                    <div class="p-5">
-                        <h3 class="font-bold text-xl mb-1 text-blue-900">Faux Bar</h3>
-                        <p class="text-gray-500 mb-3 text-sm">Bar sauvage, entier ou en filet.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-blue-700">€32.99/kg</span>
-                            <button
-                                class="bg-blue-700 text-white py-1 px-4 rounded-full font-semibold hover:bg-blue-900 transition">Commander</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Add more products as needed -->
             </div>
-            <div class="text-center mt-14">
-                <a href="{{route('product.all')}}"
-                    class="inline-block bg-blue-700 text-white py-3 px-10 rounded-full font-bold shadow-lg hover:bg-blue-900 transition">Voir
-                    tous les produits</a>
+        </section>
+
+        {{-- Modal popup détails produit --}}
+        <div id="detailsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-2">
+            <div class="bg-white rounded-lg shadow-lg w-11/12 max-w-sm sm:max-w-md md:max-w-lg p-6 relative overflow-y-auto max-h-[90vh]">
+                <button onclick="closeDetailsModal()" class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 font-bold text-xl">✖</button>
+                <img id="modalImage" src="" alt="" class="w-full h-48 object-cover rounded mb-4">
+                <h2 id="modalName" class="text-2xl font-bold mb-2"></h2>
+                <p id="modalDescription" class="text-gray-700 mb-2"></p>
+                <p id="modalPrice" class="text-lg font-bold text-green-600 mb-4"></p>
+                <p id="modalCategory" class="text-sm text-gray-500 mb-4"></p>
+                <div class="flex gap-2 flex-wrap">
+                    <form id="modalAddCartForm" method="POST" class="flex-1">
+                        @csrf
+                        <button type="submit" class="w-full bg-blue-700 hover:bg-blue-900 text-white py-2 rounded font-semibold">Ajouter au panier</button>
+                    </form>
+                    <a href="#" id="modalOrderLink" class="flex-1 w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded font-semibold">Commander</a>
+                </div>
             </div>
         </div>
-    </section>
+
+        <script>
+            const produits = @json($produits);
+
+            function openDetailsModal(id) {
+                const produit = produits.find(p => p.id === id);
+                if (!produit) return;
+
+                document.getElementById('modalImage').src = produit.image ? `/storage/${produit.image}` : 'https://via.placeholder.com/300x200';
+                document.getElementById('modalName').innerText = produit.name;
+                document.getElementById('modalDescription').innerText = produit.description ?? 'Pas de description disponible';
+                document.getElementById('modalPrice').innerText = `${produit.price.toLocaleString()} FCFA/kg`;
+                document.getElementById('modalCategory').innerText = produit.category ? `Catégorie : ${produit.category.name}` : 'Catégorie : Aucun';
+
+                // Formulaire ajouter au panier
+                const form = document.getElementById('modalAddCartForm');
+                form.action = `/cart/add/${produit.id}`;
+
+                // Lien commander
+                const orderLink = document.getElementById('modalOrderLink');
+                orderLink.href = `/order/create/${produit.id}`;
+
+                document.getElementById('detailsModal').classList.remove('hidden');
+            }
+
+            function closeDetailsModal() {
+                document.getElementById('detailsModal').classList.add('hidden');
+            }
+        </script>
+
+
 
     <!-- About Section -->
     <section id="apropos" class="py-20 bg-white">
