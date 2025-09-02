@@ -23,7 +23,7 @@ class OrderController extends Controller
     $cart = Cart::with('items.produit')->where('user_id', auth()->id())->first();
 
     if (!$cart || $cart->items->isEmpty()) {
-        return redirect()->route('products.all')->with('error', 'Votre panier est vide.');
+        return redirect()->route('product.all')->with('error', 'Votre panier est vide.');
     }
 
     $cartItems = $cart->items;

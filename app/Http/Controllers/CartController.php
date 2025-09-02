@@ -35,7 +35,7 @@ class CartController extends Controller
         }
 
         
-        return redirect()->route('products.all')
+        return redirect()->route('product.all')
                      ->with('success', 'Produit ajouté au panier avec succès ✅');
 
     }

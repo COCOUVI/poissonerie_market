@@ -15,7 +15,6 @@ Route::get('/', function () {
 });
 
 //ROUTE pour la liste des produits
-Route::get('/listes-produits',[ProductController::class,"ShowProduct"])->name("product.all");
 //route pour le panier
 Route::get('/panier',[ProductController::class,"ShowCart"])->name("home.cart");
 Route::get('/details-produits',[ProductController::class,"ShowDetails"])->name('produits.details');
@@ -84,7 +83,7 @@ Route::post('/admin/products', [AdminController::class, 'storeProduct'])->name('
 Route::put('/admin/products/{id}', [AdminController::class, 'updateProduct'])->name('admin.updateProduct');
 Route::delete('/admin/products/{id}', [AdminController::class, 'deleteProduct'])->name('admin.deleteProduct');
 // Route pour afficher tous les produits (client)
-Route::get('/products', [App\Http\Controllers\ProductController::class, 'showAllProducts'])->name('products.all');
+Route::get('/products', [App\Http\Controllers\ProductController::class, 'showAllProducts'])->name('product.all');
 
 
 

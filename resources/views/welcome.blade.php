@@ -65,42 +65,37 @@
                         // Récupérer 4 produits de catégories différentes si possible
                         $vedettes = $produits->groupBy('category_id')->take(4)->flatten();
                     @endphp
+                    
+                        @forelse($vedettes as $produit)
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+                                {{-- Image --}}
+                                <img src="{{ $produit->image ? asset('storage/'.$produit->image) : asset('images/produits/default.jpg') }}" 
+                                    alt="{{ $produit->name }}" class="h-48 w-full object-cover">
 
-                    @forelse($vedettes as $produit)
-                        <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition group">
-                            <img src="{{ $produit->image ? asset('storage/'.$produit->image) : 'https://via.placeholder.com/300x200' }}"
-                                alt="{{ $produit->name }}" class="w-full h-48 object-cover group-hover:scale-110 transition">
-                            <div class="p-5 flex flex-col justify-between h-full">
-                                <div>
-                                    <h3 class="font-bold text-xl mb-1 text-blue-900">{{ $produit->name }}</h3>
-                                    <p class="text-gray-500 mb-3 text-sm">{{ Str::limit($produit->description, 60, '...') }}</p>
-                                    <span class="font-bold text-blue-700">{{ number_format($produit->price, 0, ',', ' ') }} FCFA/kg</span>
-                                
-                                    <div class="flex justify-between mt-3">
-                                        <!-- Bouton Voir -->
-                                        <button onclick="openDetailsModal({{ $produit->id }})"
-                                            class="bg-gray-200 text-gray-800 py-1 px-2 text-xs rounded-full font-semibold hover:bg-gray-300 transition">
-                                            Voir
-                                        </button>
+                                {{-- Contenu --}}
+                                <div class="p-4 flex-1 flex flex-col">
+                                    <h2 class="text-xl font-semibold mb-2">{{ $produit->name }}</h2>
+                                    <p class="text-gray-600 mb-4 flex-1">{{ Str::limit($produit->description, 60, '...') }}</p>
+                                    <p class="text-lg font-bold text-green-600 mb-4">{{ number_format($produit->price, 0, ',', ' ') }} FCFA/kg</p>
 
-                                        <!-- Bouton Commander -->
+                                    {{-- Boutons --}}
+                                    <div class="space-y-2">
                                         <form action="{{ route('cart.add', $produit->id) }}" method="POST">
                                             @csrf
-                                            <button type="submit"
-                                                class="bg-blue-700 text-white py-1 px-2 text-xs rounded-full font-semibold hover:bg-blue-900 transition">
-                                                Commander
-                                            </button>
+                                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">Ajouter au panier</button>
                                         </form>
+
+                                        
+
+                                        
                                     </div>
                                 </div>
-                                
-                                
-
                             </div>
-                        </div>
-                    @empty
-                        <p class="col-span-4 text-center text-gray-500">Aucun produit disponible pour le moment.</p>
-                    @endforelse
+                        @empty
+                            <p class="col-span-3 text-center text-gray-500">Aucun produit disponible pour le moment.</p>
+                        @endforelse
+                    
+                    
                 </div>
 
                 <div class="text-center mt-14">
@@ -114,20 +109,19 @@
 
         {{-- Modal popup détails produit --}}
         <div id="detailsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-2">
-            <div class="bg-white rounded-lg shadow-lg w-11/12 max-w-sm sm:max-w-md md:max-w-lg p-6 relative overflow-y-auto max-h-[90vh]">
+            <div class="bg-white rounded-lg shadow-lg w-11/12 max-w-sm sm:max-w-md md:max-w-lg p-6 relative">
                 <button onclick="closeDetailsModal()" class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 font-bold text-xl">✖</button>
                 <img id="modalImage" src="" alt="" class="w-full h-48 object-cover rounded mb-4">
                 <h2 id="modalName" class="text-2xl font-bold mb-2"></h2>
                 <p id="modalDescription" class="text-gray-700 mb-2"></p>
                 <p id="modalPrice" class="text-lg font-bold text-green-600 mb-4"></p>
                 <p id="modalCategory" class="text-sm text-gray-500 mb-4"></p>
-                <div class="flex gap-2 flex-wrap">
-                    <form id="modalAddCartForm" method="POST" class="flex-1">
+                <div class="flex gap-2">
+                    <form id="modalAddCartForm" method="POST">
                         @csrf
-                        <button type="submit" class="w-full bg-blue-700 hover:bg-blue-900 text-white py-2 rounded font-semibold">Ajouter au panier</button>
+                        <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">Ajouter au panier</button>
                     </form>
-                    <a href="#" id="modalOrderLink" class="flex-1 w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded font-semibold">Commander</a>
-                </div>
+            </div>
             </div>
         </div>
 
@@ -138,9 +132,9 @@
                 const produit = produits.find(p => p.id === id);
                 if (!produit) return;
 
-                document.getElementById('modalImage').src = produit.image ? `/storage/${produit.image}` : 'https://via.placeholder.com/300x200';
+                document.getElementById('modalImage').src = produit.image ? `/storage/${produit.image}` : '/images/produits/default.jpg';
                 document.getElementById('modalName').innerText = produit.name;
-                document.getElementById('modalDescription').innerText = produit.description ?? 'Pas de description disponible';
+                document.getElementById('modalDescription').innerText = produit.description ?? 'Pas de description';
                 document.getElementById('modalPrice').innerText = `${produit.price.toLocaleString()} FCFA/kg`;
                 document.getElementById('modalCategory').innerText = produit.category ? `Catégorie : ${produit.category.name}` : 'Catégorie : Aucun';
 

@@ -27,10 +27,7 @@
 
                             
 
-                            <button onclick="openDetailsModal({{ $produit->id }})" 
-                                    class="block w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded text-center">
-                                Voir détails
-                            </button>
+                            
                         </div>
                     </div>
                 </div>

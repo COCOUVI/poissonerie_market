@@ -74,7 +74,7 @@
                     <div class="text-gray-600 text-lg mb-4">
                         Votre panier est vide 😢
                     </div>
-                    <a href="{{ route('products.all') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow">
+                    <a href="{{ route('product.all') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow">
                         🔙 Retour aux produits
                     </a>
                 </div>
