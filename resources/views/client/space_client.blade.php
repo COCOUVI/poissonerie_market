@@ -7,9 +7,14 @@
     <main class="flex-1 p-6">
         <div class="max-w-4xl mx-auto">
             <div class="bg-white rounded-lg shadow-md p-6">
+               
                 <!-- Votre contenu ici -->
                 <h1 class="text-2xl font-bold text-gray-800 mb-6">Bienvenue dans votre espace client</h1>
-                
+                 @if (session('success'))
+                <div class="bg-green-100 text-green-700 px-4 py-2 rounded mb-4">
+                    {{ session('success') }}
+                </div>
+                @endif
                 <!-- Section infos client -->
                 <div class="mb-8">
                     <h2 class="text-xl font-semibold text-teal-700 mb-4">Vos informations</h2>

@@ -26,67 +26,65 @@
             <span class="text-sm font-medium">Tableau de bord</span>
         </a>
 
-        <a href="{{route('admin.catalogue')}}"
+        <a href="{{route('admin.listCategories')}}"
            class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
-           {{ request()->routeIs('admin.catalogue') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+           {{ request()->routeIs('admin.listCategories') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-box w-5"></i>
+            <span class="text-sm font-medium">Catégorie</span>
+        </a>
+        <a href="{{route('admin.listProducts')}}"
+           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
+           {{ request()->routeIs('admin.listProducts') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
             <i class="fas fa-box w-5"></i>
             <span class="text-sm font-medium">Catalogue Produits</span>
         </a>
 
-        <a href="{{route('admin.orders')}}"
+        <a href="{{route('orders')}}"
            class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
-           {{ request()->routeIs('admin.orders') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+           {{ request()->routeIs('orders') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
             <i class="fas fa-shopping-cart w-5"></i>
-            <span class="text-sm font-medium">Commandes</span>
+            <span class="text-sm font-medium">Commandes en attentes</span>
         </a>
 
-        <a href="{{route('admin.users')}}"
+        <a href="{{route('admin.orders.validated')}}"
            class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
-           {{ request()->routeIs('admin.users') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+           {{ request()->routeIs('admin.orders.validated') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-shopping-cart w-5"></i>
+            <span class="text-sm font-medium">Commandes Validées </span>
+        </a>
+
+        <a href="{{route('admin.orders.delivered')}}"
+           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
+           {{ request()->routeIs('admin.orders.delivered') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-shopping-cart w-5"></i>
+            <span class="text-sm font-medium">Commandes Livrées</span>
+        </a>
+
+        <a href="{{route('admin.listAdmins')}}"
+           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
+           {{ request()->routeIs('admin.listAdmin') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
             <i class="fas fa-users w-5"></i>
             <span class="text-sm font-medium">Admnistrateurs Secondaires</span>
         </a>
-
-        <a href="{{route('admin.messages')}}"
+        <a href="{{route('admin.listClients')}}"
            class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
-           {{ request()->routeIs('admin.messages') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
-            <i class="fas fa-comment w-5"></i>
-            <span class="text-sm font-medium">Messages</span>
+           {{ request()->routeIs('admin.listClients') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+            <i class="fas fa-users w-5"></i>
+            <span class="text-sm font-medium">Liste des Clients</span>
         </a>
 
-        <a href="{{route("admin.promotions")}}"
+        <a href="{{route("admin.create")}}"
            class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
-           {{ request()->routeIs('admin.promotions') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
-            <i class="fas fa-percent w-5"></i>
-            <span class="text-sm font-medium">Promotions</span>
-        </a>
-
-        <a href="{{route('admin.news')}}"
-           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
-           {{ request()->routeIs('admin.news') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
-            <i class="fas fa-newspaper w-5"></i>
-            <span class="text-sm font-medium">Actualités</span>
-        </a>
-
-        <a href="{{route('admin.delivery')}}"
-           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
-           {{ request()->routeIs('admin.delivery') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
-            <i class="fas fa-truck w-5"></i>
-            <span class="text-sm font-medium">Livraisons</span>
-        </a>
-
-        <a href="{{route("admin.admins")}}"
-           class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
-           {{ request()->routeIs('admin.admins') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+           {{ request()->routeIs('admin.create') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
             <i class="fas fa-user-plus w-5"></i>
-            <span class="text-sm font-medium">Administrateurs</span>
+            <span class="text-sm font-medium">Creer un Administrateur</span>
         </a>
 
-        <a href="{{route('admin.settings')}}"
+        <a href="{{route('logout')}}"
            class="w-full flex items-center space-x-3 px-6 py-3 hover:bg-slate-800 transition-colors 
-           {{ request()->routeIs('admin.settings') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
+           {{ request()->routeIs('logout') ? 'bg-slate-800 border-r-2 border-blue-400' : '' }}">
             <i class="fas fa-cog w-5"></i>
-            <span class="text-sm font-medium">Paramètres</span>
+            <span class="text-sm font-medium b">Deconnexion</span>
         </a>
 
     </nav>

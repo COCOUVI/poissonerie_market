@@ -4,6 +4,7 @@
 <div class="flex flex-col md:flex-row bg-gray-50 min-h-[calc(100vh-140px)]">
     @include('partials.sidebar')
     <div class="container mt-5">
+    <!-- Header -->
 
     <main class="container mx-auto px-4 py-8">
         <div class="flex flex-col lg:flex-row gap-8">
@@ -13,14 +14,14 @@
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">Menu</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="{{ route('orders.my') }}" class="text-gray-600 hover:text-primary font-medium flex items-center">
+                            <a href="{{ route('orders.my') }}" class="text-primary font-medium flex items-center">
                                 <i class="fas fa-shopping-bag mr-2"></i>
                                 Mes commandes
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('orders.hold') }}" class="text-primary flex items-center">
-                                <i class="fas fa-shopping-bag mr-2"></i>
+                            <a href="{{ route('orders.hold') }}" class="text-gray-600 hover:text-primary flex items-center">
+                                <i class="fas fa-user mr-2"></i>
                                 Commandes validés ou livrés
                             </a>
                         </li>
@@ -31,7 +32,16 @@
                 <div class="bg-white rounded-lg shadow-md p-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">Statistiques</h3>
                     <div class="grid grid-cols-2 gap-4">
-                       
+                        <div class="bg-blue-50 p-3 rounded-lg text-center">
+                            <p class="text-2xl font-bold text-primary">{{ count($orders) }}</p>
+                            <p class="text-sm text-gray-600">Commandes</p>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded-lg text-center">
+                            <p class="text-2xl font-bold text-secondary">
+                                {{ $orders->where('status', 'pending')->count() }}
+                            </p>
+                            <p class="text-sm text-gray-600">En attentes</p>
+                        </div>
                         <div class="bg-green-50 p-3 rounded-lg text-center">
                             <p class="text-2xl font-bold text-secondary">
                                 {{ $orders->where('status', 'validated')->count() }}
@@ -52,7 +62,7 @@
             <div class="lg:w-3/4">
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="px-6 py-4 border-b border-gray-100">
-                        <h2 class="text-xl font-semibold text-gray-800">Historique des commandes</h2>
+                        <h2 class="text-xl font-semibold text-gray-800">Mes Commandes</h2>
                     </div>
                     
                     <div class="overflow-x-auto">
@@ -152,7 +162,7 @@
                         <h3 class="text-lg font-medium text-gray-600">Aucune commande pour le moment</h3>
                         <p class="text-gray-500 mt-2">Vos commandes apparaîtront ici une fois passées.</p>
                         <a href="{{route('product.all')}}" class="inline-block mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors">
-                            Voir les Produits
+                            Voir Les Produits
                         </a>
                     </div>
                     @endif

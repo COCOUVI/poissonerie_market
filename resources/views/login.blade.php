@@ -3,15 +3,32 @@
 <div class="min-h-screen flex items-center justify-center bg-white py-10">
     <div class="bg-white shadow-xl rounded-lg w-full max-w-md p-8">
         {{-- Logo --}}
+        @if(session('success'))
+            <div class="mb-4 p-3 text-green-800 bg-green-200 rounded">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if($errors->any())
+            <div class="mb-4 p-3 text-red-800 bg-red-200 rounded">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>- {{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="flex justify-center mb-6">
             <img src="{{ asset('images/PHOTO1.jpg') }}" alt="Logo de l'entreprise" class="h-16">
         </div>
+        
 
         {{-- Titre --}}
         <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Connexion</h2>
 
         {{-- Formulaire --}}
-        <form method="POST" action="" class="space-y-4">
+        <form method="POST" action="{{ route('login.post') }}" class="space-y-4">
             @csrf
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-600">Adresse Email</label>
@@ -44,7 +61,7 @@
 
             <div class="text-sm text-center text-gray-500">
                 Pas encore de compte ?
-                <a href="/register" class="text-blue-600 hover:underline">Inscrivez-vous</a>
+                <a href="{{ route('register') }}" class="text-blue-600 hover:underline">Inscrivez-vous</a>
             </div>
         </form>
     </div>
