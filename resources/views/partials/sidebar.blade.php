@@ -11,20 +11,20 @@
             <h3 class="text-teal-200 uppercase text-xs font-semibold tracking-wider mb-2">Commandes</h3>
             <ul class="space-y-2">
                 <li>
-                    <a href="{{ route('commandes.en_cours') }}"
+                    <a href="{{ route('orders.my') }}"
                         class="flex items-center px-3 py-2 rounded transition 
-                            {{ request()->routeIs('commandes.en_cours') ? 'bg-teal-700 font-bold' : 'hover:bg-teal-600' }}">
+                            {{ request()->routeIs('orders.my') ? 'bg-teal-700 font-bold' : 'hover:bg-teal-600' }}">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
-                        En cours
+                        Commandes
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('commandes.historique') }}"
+                    <a href="{{ route('orders.hold') }}"
                         class="flex items-center px-3 py-2 rounded transition 
-                            {{ request()->routeIs('commandes.historique') ? 'bg-teal-700 font-bold' : 'hover:bg-teal-600' }}">
+                            {{ request()->routeIs('orders.hold') ? 'bg-teal-700 font-bold' : 'hover:bg-teal-600' }}">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>

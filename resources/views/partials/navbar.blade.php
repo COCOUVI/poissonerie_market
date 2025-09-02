@@ -14,13 +14,13 @@
         <!-- Navigation desktop -->
         <nav class="hidden md:flex items-center space-x-6">
             <a href="/" class="hover:text-blue-600 font-medium transition">Accueil</a>
-            <a href="#produits" class="hover:text-blue-600 font-medium transition">Produits</a>
+            <a href="{{route('product.all')}}" class="hover:text-blue-600 font-medium transition">Produits</a>
             <a href="#apropos" class="hover:text-blue-600 font-medium transition">À propos</a>
             <a href="#contact" class="hover:text-blue-600 font-medium transition">Contact</a>
 
             <!-- Panier avec compteur -->
             <a href="{{ route('cart.show') }}" class="relative">
-                🛒
+                <i class="fas fa-shopping-cart mr-1"></i>
                 <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
                     {{ app('App\Http\Controllers\CartController')->cartCount() }}
                 </span>
@@ -63,17 +63,17 @@
     <!-- Menu mobile -->
     <div class="md:hidden hidden bg-blue-100 px-4 py-2" id="mobile-menu">
         <a href="/" class="block py-2 hover:text-blue-600 font-medium">Accueil</a>
-        <a href="#produits" class="block py-2 hover:text-blue-600 font-medium">Produits</a>
+        <a href="{{route('product.all')}}" class="block py-2 hover:text-blue-600 font-medium">Produits</a>
         <a href="#apropos" class="block py-2 hover:text-blue-600 font-medium">À propos</a>
         <a href="#contact" class="block py-2 hover:text-blue-600 font-medium">Contact</a>
 
         <!-- Panier mobile -->
         <a href="{{ route('cart.show') }}" class="relative">
-                🛒
+                <i class="fas fa-shopping-cart mr-1"></i>
                 <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
                     {{ app('App\Http\Controllers\CartController')->cartCount() }}
                 </span>
-            </a>
+        </a>
 
         <!-- Espace client -->
             @if(Auth::check() && Auth::user()->role === 'client')

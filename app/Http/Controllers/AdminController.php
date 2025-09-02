@@ -6,13 +6,64 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Produit;
 use Illuminate\Support\Facades\Storage;
+   use App\Models\Order;
+use App\Models\User;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
     //
-    public function index() {
-        return view("admin.index");
+ 
+
+    public function index()
+    {
+        $todayStart = Carbon::now()->startOfDay();
+        $todayEnd = Carbon::now()->endOfDay();
+
+        $salesToday = Order::whereBetween('created_at', [$todayStart, $todayEnd])->sum('total');
+
+        $pendingOrdersCount = Order::where('status', 'pending')->count();
+        $validatedOrdersCount = Order::where('status', 'validated')->count();
+        $deliveredOrdersCount = Order::where('status', 'delivered')->count();
+
+        $newClientsCount = User::whereBetween('created_at', [$todayStart, $todayEnd])->count();
+
+        $recentOrders = Order::with('user')->latest()->take(5)->get();
+        $recentProducts = Produit::latest()->take(5)->get();
+
+        return view("admin.index", compact(
+            'salesToday',
+            'pendingOrdersCount',
+            'validatedOrdersCount',
+            'deliveredOrdersCount',
+            'newClientsCount',
+            'recentOrders',
+            'recentProducts'
+        ));
     }
+ 
+
+    public function listAdmins()
+{
+    $admins = User::where('role', 'admin')->latest()->paginate(10);
+    return view('admin.listadmins', ['users' => $admins, 'title' => 'Administrateurs']);
+}
+
+public function listClients()
+{
+    $clients = User::where('role', 'client')->latest()->paginate(10);
+    return view('admin.listclients', ['users' => $clients, 'title' => 'Clients']);
+}
+
+    public function destroyUser(User $user)
+    {
+        // Optionnel : tu peux interdire la suppression d'un admin depuis la liste clients, etc.
+        $user->delete();
+
+        return redirect()->back()->with('success', 'Utilisateur supprimé avec succès.');
+    }
+
+
     public function ShowProductPage(){
         return view('admin.add_product');
     }

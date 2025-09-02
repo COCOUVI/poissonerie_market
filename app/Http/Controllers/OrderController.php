@@ -7,8 +7,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
-use Fedapay\FedaPay;
-use Fedapay\Transaction;
+use App\Models\Cart;
+use App\Models\CartItem;
+use FedaPay\FedaPay;
+use FedaPay\Transaction;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -17,12 +19,21 @@ class OrderController extends Controller
      * Page de checkout (formulaire avec téléphone + bouton payer)
      */
     public function checkout()
-    {
-        $cartItems = CartItem::where('user_id', Auth::id())->with('product')->get();
-        $total = $cartItems->sum(fn($item) => $item->quantity * $item->product->price);
+{
+    $cart = Cart::with('items.produit')->where('user_id', auth()->id())->first();
 
-        return view('order.checkout', compact('cartItems', 'total'));
+    if (!$cart || $cart->items->isEmpty()) {
+        return redirect()->route('products.all')->with('error', 'Votre panier est vide.');
     }
+
+    $cartItems = $cart->items;
+
+    $total = $cartItems->sum(function ($item) {
+        return $item->quantity * $item->produit->price;
+    });
+
+    return view('client.checkout', compact('cartItems', 'total'));
+}
 
    
     /**
@@ -36,58 +47,75 @@ class OrderController extends Controller
     }
 
 
+
     public function processCheckout(Request $request)
     {
         $request->validate([
             'phone' => 'required|string',
         ]);
 
-        $cart = session()->get('cart', []);
-        if (empty($cart)) {
-            return redirect()->route('cart.index')->with('error', 'Votre panier est vide');
+        // 1. Récupérer le panier de l'utilisateur
+        $cart = Cart::with('items')->where('user_id', Auth::id())->first();
+
+        if (!$cart || $cart->items->isEmpty()) {
+            return redirect()->route('cart.show')->with('error', 'Votre panier est vide');
         }
 
-        // 1. Créer la commande
+        // 2. Créer une commande avec total temporaire à 0
         $order = Order::create([
-            'user_id' => Auth::id(),
-            'phone'   => $request->phone,
-            'status'  => 'en attente',
-            'code'    => strtoupper(uniqid('CMD-')),
+            'user_id'    => Auth::id(),
+            'phone'      => $request->phone,
+            'status'     => 'pending',
+            'order_code' => strtoupper(uniqid('CMD-')),
+            'total'      => 0, // On le mettra à jour après calcul
         ]);
 
+        // 3. Ajouter les produits dans la commande
         $total = 0;
-        foreach ($cart as $productId => $item) {
+
+        foreach ($cart->items as $item) {
             OrderItem::create([
                 'order_id'   => $order->id,
-                'product_id' => $productId,
-                'quantity'   => $item['quantity'],
-                'price'      => $item['price'],
+                'produit_id' => $item->produit_id,
+                'quantity'   => $item->quantity,
+                'price'      => $item->price,
             ]);
-            $total += $item['price'] * $item['quantity'];
+
+            $total += $item->price * $item->quantity;
         }
 
-        // 2. Config Fedapay
-        FedaPay::setApiKey(config('fedapay.secret_key'));
-        FedaPay::setEnvironment(config('fedapay.environment'));
+        // 4. Mettre à jour le total dans la commande
+        $order->update([
+            'total' => $total,
+        ]);
 
-        // 3. Créer une transaction
+        // 5. Configurer Fedapay
+        FedaPay::setApiKey('sk_test_r_8PWuWDyP5O5GWeqIZfc414');
+        FedaPay::setEnvironment('sandbox');
+
+
+        // 6. Créer une transaction Fedapay
         $transaction = Transaction::create([
-            "description" => "Paiement de la commande {$order->code}",
-            "amount"      => $total,
-            "currency"    => ["iso" => "XOF"],
-            "callback_url" => route('orders.callback', $order->id),
-            "cancel_url"   => route('orders.checkout'),
+            "description"   => "Paiement de la commande {$order->order_code}",
+            "amount"        => $total,
+            "currency"      => ["iso" => "XOF"],
+            "callback_url"  => route('orders.callback', $order->id),
+            "cancel_url"    => route('orders.checkout'),
             "customer" => [
                 "phone_number" => [
-                    "number" => $request->phone,
+                    "number"  => $request->phone,
                     "country" => "BJ"
                 ]
             ]
         ]);
 
-        // 4. Rediriger vers la page de paiement
+        // 7. Vider le panier de l'utilisateur
+        $cart->items()->delete();
+
+        // 8. Rediriger vers Fedapay
         return redirect($transaction->url);
     }
+
 
     // ✅ Callback après paiement
     public function callback($orderId, Request $request)
@@ -122,12 +150,43 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::with('user')->latest()->get();
+        $orders = Order::with('user')
+            ->where('status', 'pending')
+            ->latest()
+            ->paginate(10);
+
         return view('admin.list_orders', compact('orders'));
     }
-
-    public function updateStatus($id, $status)
+    public function validatedOrders()
     {
+        $orders = Order::with('user')
+            ->where('status', 'validated')
+            ->latest()
+            ->paginate(10);
+
+        return view('admin.order_validated', compact('orders'));
+    }
+    public function deliveredOrders()
+    {
+        $orders = Order::with('user')
+            ->where('status', 'delivered')
+            ->latest()
+            ->paginate(10);
+
+        return view('admin.order_delivered', compact('orders'));
+    }
+
+
+
+
+        public function updateStatus($id, $status)
+    {
+        $validStatuses = ['validated', 'delivered', 'pending', 'paid'];
+
+        if (!in_array($status, $validStatuses)) {
+            return back()->with('error', 'Statut invalide.');
+        }
+
         $order = Order::findOrFail($id);
         $order->update(['status' => $status]);
 
@@ -135,15 +194,30 @@ class OrderController extends Controller
     }
 
 
+
     public function myOrders()
 {
     $orders = Order::where('user_id', auth()->id())
-        ->with('items.product')
+        ->with('items.produit')
         ->latest()
-        ->get();
+        ->paginate(10);
+        
 
-    return view('orders.my-orders', compact('orders'));
+    return view('client.my-orders', compact('orders'));
 }
+public function hold()
+{
+    $orders = Order::with('items.produit')
+        ->where('user_id', auth()->id())
+        ->whereIn('status', ['validated', 'delivered']) // ✅ Filtre ici
+        ->orderByDesc('created_at')
+        ->paginate(10);
+      
+       
+
+    return view('client.hold_orders', compact('orders'));
+}
+
 
 }
 

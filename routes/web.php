@@ -113,13 +113,23 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
 Route::get('/list-orders', [OrderController::class, 'index'])->name('orders');
+Route::get('/orders/{id}/status/{status}', [OrderController::class, 'updateStatus'])
+    ->name('admin.orders.updateStatus');
+Route::get('/admin/orders/validated', [OrderController::class, 'validatedOrders'])->name('admin.orders.validated');
+Route::get('/admin/orders/delivered', [OrderController::class, 'deliveredOrders'])->name('admin.orders.delivered');
 Route::post('/checkout', [OrderController::class, 'processCheckout'])->name('orders.processCheckout');
 Route::get('/orders/callback/{id}', [OrderController::class, 'callback'])->name('orders.callback');
 Route::get('/orders/success/{id}', [OrderController::class, 'success'])->name('orders.success');
 Route::middleware(['auth'])->group(function () {
     Route::get('/mes-commandes', [OrderController::class, 'myOrders'])->name('orders.my');
+    Route::get('/hold-commandes', [OrderController::class, 'hold'])->name('orders.hold');
+
 });
 
 Route::get('/cart/count', [CartController::class, 'cartCount'])->name('cart.count');
+
+Route::get('/listadmins', [AdminController::class, 'listAdmins'])->name('admin.listAdmins');
+Route::get('/listclients', [AdminController::class, 'listClients'])->name('admin.listClients');
+Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
 
 
