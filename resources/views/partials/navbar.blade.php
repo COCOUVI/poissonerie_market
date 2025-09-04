@@ -7,7 +7,7 @@
                 <img src="/images/PHOTO1.jpg" alt="Logo Comptoir SENAN Market" class="h-14 w-14 object-contain">
             </div>
             <h1 class="text-2xl md:text-3xl font-bold">
-                Comptoir <span class="text-red-400">SENAN</span> Market
+                Comptoir <span class="text-red-400">SENAN</span> & Market
             </h1>
         </div>
         
