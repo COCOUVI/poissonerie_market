@@ -67,7 +67,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('')->with('success', 'Compte créé avec succès.');
+        return redirect()->route('login')->with('success', 'Compte créé avec succès.');
     }
 
     public function ShowClientSpace(){
