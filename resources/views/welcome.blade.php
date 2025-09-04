@@ -184,11 +184,11 @@
                     <!-- Statistiques -->
                     <div class="flex flex-col md:flex-row gap-6 mt-8">
                         <div class="bg-blue-100 p-6 rounded-xl text-center flex-1">
-                            <h3 class="font-bold text-2xl text-blue-900">20+</h3>
+                            <h3 class="font-bold text-2xl text-blue-900">5+</h3>
                             <p class="text-sm text-gray-600">Années d'expérience</p>
                         </div>
                         <div class="bg-blue-100 p-6 rounded-xl text-center flex-1">
-                            <h3 class="font-bold text-2xl text-blue-900">50+</h3>
+                            <h3 class="font-bold text-2xl text-blue-900">30+</h3>
                             <p class="text-sm text-gray-600">Espèces disponibles</p>
                         </div>
                         <div class="bg-blue-100 p-6 rounded-xl text-center flex-1">
