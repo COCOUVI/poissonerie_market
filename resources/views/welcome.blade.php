@@ -61,9 +61,13 @@
                 <h2 class="text-4xl font-extrabold text-center mb-14 text-blue-900">Nos Produits Vedettes</h2>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-                    @php
-                        // Récupérer 4 produits de catégories différentes si possible
-                        $vedettes = $produits->groupBy('category_id')->take(4)->flatten();
+                   @php
+                        $vedettes = collect();
+                        $groupes = $produits->groupBy('category_id');
+                        foreach ($groupes as $groupe) {
+                            if ($vedettes->count() >= 4) break;
+                            $vedettes->push($groupe->first());
+                        }
                     @endphp
                     
                         @forelse($vedettes as $produit)
