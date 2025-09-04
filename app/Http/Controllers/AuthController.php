@@ -74,7 +74,8 @@ class AuthController extends Controller
 
         return view("client.space_client");
     }
-     public function index() {
+
+    public function index() {
         return view("admin.index");
     }
 

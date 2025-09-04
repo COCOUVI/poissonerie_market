@@ -169,7 +169,7 @@
                 <div class="md:w-1/2">
                     <h2 class="text-3xl sm:text-4xl font-extrabold mb-6 text-blue-900">Notre Histoire</h2>
                     <p class="text-base sm:text-lg mb-4 text-gray-700">
-                        Depuis 2019, Poissonnerie Bleue s'engage à offrir le meilleur de la mer, avec une sélection
+                        Depuis 2019,  Comptoir <span class="text-red-400">SENAN</span> & Market s'engage à offrir le meilleur de la mer, avec une sélection
                         exigeante et un service personnalisé.
                     </p>
                     <p class="text-base sm:text-lg mb-4 text-gray-700">

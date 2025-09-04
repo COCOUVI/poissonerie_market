@@ -19,8 +19,6 @@ Route::get('/', function () {
 Route::get('/panier',[ProductController::class,"ShowCart"])->name("home.cart");
 Route::get('/details-produits',[ProductController::class,"ShowDetails"])->name('produits.details');
 //route pour l'authentification
-Route::get('/register', [RegisterController::class, "RegisterPage"]);
-Route::get('/login', [AuthController::class, "LoginPage"]);
 //route concernant admin
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class,"index"])->name('admin.dashboard');
@@ -55,13 +53,13 @@ Route::prefix('espace-client')->group(function() {
 // Auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Inscription client
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::get('/space_client', [AuthController::class, 'ShowClientSpace'])->name('Espace_client')->middleware('auth');
-Route::get('/ADMIN', [AuthController::class,"index"])->name('admin.index');
+Route::get('/ADMIN', [AdminController::class,"index"])->name('admin.index');
 
 // Ajout d’admin par un admin (protégé)
 Route::middleware(['auth', 'admin'])->group(function () {

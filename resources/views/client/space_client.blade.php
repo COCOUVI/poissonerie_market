@@ -21,45 +21,46 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <p class="text-gray-600">Nom complet :</p>
-                            <p class="font-medium"></p>
+                            <p class="font-medium"> {{ Auth::user()->name }}</p>
                         </div>
                         <div>
-                            <p class="text-gray-600">Email :</p>
-                            <p class="font-medium"></p>
+                            <p class="text-gray-600">Email : </p>
+                            <p class="font-medium">{{ Auth::user()->email }}</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Dernières commandes -->
-                <div>
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-semibold text-teal-700">Vos dernières commandes</h2>
-                        <a href="#" class="text-teal-600 hover:underline">Voir tout</a>
-                    </div>
-                    
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white">
-                            <thead>
-                                <tr class="bg-gray-100 text-gray-700">
-                                    <th class="py-2 px-4 text-left">N° Commande</th>
-                                    <th class="py-2 px-4 text-left">Date</th>
-                                    <th class="py-2 px-4 text-left">Statut</th>
-                                    <th class="py-2 px-4 text-left">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                    <td class="py-3 px-4">#PC-2023-001</td>
-                                    <td class="py-3 px-4">15/07/2023</td>
-                                    <td class="py-3 px-4">
-                                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Livrée</span>
-                                    </td>
-                                    <td class="py-3 px-4">42,50 €</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <!-- Actions rapides -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Actions rapides</h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <a href="{{ route('orders.my') }}"
+                            class="flex items-center space-x-3 p-4 bg-blue-100 rounded-lg hover:bg-blue-200 transition-colors">
+                            <i class="fas fa-shopping-bag text-blue-600"></i>
+                            <span class="font-medium text-blue-900">Commandes</span>
+                        </a>
+
+                        <a href="{{ route('orders.hold') }}"
+                            class="flex items-center space-x-3 p-4 bg-green-100 rounded-lg hover:bg-green-200 transition-colors">
+                            <i class="fas fa-shopping-bag text-green-600"></i>
+                            <span class="font-medium text-green-900">Historique de commande</span>
+                        </a>
+                        <a href="{{route('cart.show')}}"
+                            class="flex items-center space-x-3 p-4 bg-yellow-100 rounded-lg hover:bg-yellow-200 transition-colors">
+                            <i class="fas fa-shopping-cart text-yellow-600"></i>
+                            <span class="font-medium text-yellow-900">Panier</span>
+                        </a>
+
+                       
+
                     </div>
                 </div>
+    
+            </div>
+                
             </div>
         </div>
     </main>

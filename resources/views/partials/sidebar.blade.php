@@ -2,9 +2,7 @@
     <div class="flex-1">
         <div class="flex items-center justify-between mb-8">
             <h2 class="text-xl font-bold">Mon Espace</h2>
-            <div class="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center">
-                <span class="text-sm">AJ</span>
-            </div>
+            
         </div>
 
         <nav>
