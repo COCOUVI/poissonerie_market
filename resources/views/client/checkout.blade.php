@@ -79,10 +79,20 @@
                             </div>
                         </div>
                     </div>
+                    @if(now()->format('H') < 7 || now()->format('H') >= 20)
+                        <div class="alert alert-danger">
+                            🚫 Désolé, notre boutique est fermée. Commandes possibles de 07h à 20h.
+                        </div>
+                   
 
-                    <button type="submit" class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">                  <i class="fas fa-lock mr-2"></i>
+                    <button type="submit" class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors" disabled>                  <i class="fas fa-lock mr-2"></i>
                         Payer avec Fedapay
                     </button>
+                    @else
+                    <button type="submit" class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors" disabled>                  <i class="fas fa-lock mr-2"></i>
+                        Payer avec Fedapay
+                    </button>
+                    @endif
                 </form>
             </div>
         </div>

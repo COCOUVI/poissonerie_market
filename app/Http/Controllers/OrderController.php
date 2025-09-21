@@ -50,6 +50,12 @@ class OrderController extends Controller
 
     public function processCheckout(Request $request)
     {
+        $now = now()->format('H'); // renvoie l'heure en 24h, ex: 19, 20, 21
+
+    if ($hour < 7 || $hour >= 20) {
+        return redirect()->route('cart.show')
+            ->with('error', 'Les commandes sont possibles uniquement entre 07h et 20h.');
+    }
         $request->validate([
             'phone' => 'required|string',
         ]);
@@ -90,8 +96,9 @@ class OrderController extends Controller
         ]);
 
         // 5. Configurer Fedapay
-        FedaPay::setApiKey('sk_test_r_8PWuWDyP5O5GWeqIZfc414');
-        FedaPay::setEnvironment('sandbox');
+        \FedaPay\FedaPay::setApiKey('sk_test_r_8PWuWDyP5O5GWeqIZfc414');
+        \FedaPay\FedaPay::setEnvironment('sandbox');
+        /* Remplacez VOTRE_CLE_API_SECRETE par votre clé API secrète */
 
 
         // 6. Créer une transaction Fedapay
@@ -179,20 +186,31 @@ class OrderController extends Controller
 
 
 
-        public function updateStatus($id, $status)
-    {
-        $validStatuses = ['validated', 'delivered', 'pending', 'paid'];
+       public function updateStatus($id, $status)
+{
+    $validStatuses = ['validated', 'delivered', 'pending', 'paid'];
 
-        if (!in_array($status, $validStatuses)) {
-            return back()->with('error', 'Statut invalide.');
-        }
-
-        $order = Order::findOrFail($id);
-        $order->update(['status' => $status]);
-
-        return back()->with('success', "Commande mise à jour en $status");
+    if (!in_array($status, $validStatuses)) {
+        return back()->with('error', 'Statut invalide.');
     }
 
+    $order = Order::with('items.produit')->findOrFail($id);
+
+    // 🔥 Quand on valide la commande → décrémenter le stock
+    if ($status === 'validated' && $order->status !== 'validated') {
+        foreach ($order->items as $item) {
+            if ($item->produit) {
+                // sécurité pour éviter stock négatif
+                $newStock = max(0, $item->produit->stock - $item->quantity);
+                $item->produit->update(['stock' => $newStock]);
+            }
+        }
+    }
+
+    $order->update(['status' => $status]);
+
+    return back()->with('success', "Commande mise à jour en $status");
+}
 
 
     public function myOrders()
