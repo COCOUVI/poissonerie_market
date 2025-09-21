@@ -61,7 +61,7 @@
                 <h2 class="text-4xl font-extrabold text-center mb-14 text-blue-900">Nos Produits Vedettes</h2>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-                   @php
+                    @php
                         $vedettes = collect();
                         $groupes = $produits->groupBy('category_id');
                         foreach ($groupes as $groupe) {
@@ -372,6 +372,9 @@
                         <h3 class="text-xl font-bold mb-4 text-blue-900">Nos coordonnées</h3>
                         <ul class="space-y-4 text-gray-700">
                             <li><i class="fas fa-map-marker-alt text-blue-700 mr-2"></i> TORI GARE, BENIN</li>
+                            <li><i class="fas fa-map-marker-alt text-blue-700 mr-2"></i> HOUETO, BENIN</li>
+                            <li><i class="fas fa-map-marker-alt text-blue-700 mr-2"></i> TOGOUDO, BENIN</li>
+                            <li><i class="fas fa-map-marker-alt text-blue-700 mr-2"></i> ZOGBADJE, BENIN</li>
                             <li><i class="fas fa-phone-alt text-blue-700 mr-2"></i> 01 68 68 49 49</li>
                             <li><i class="fas fa-envelope text-blue-700 mr-2"></i> senanmarket29@gmail.com</li>
                             <li><i class="fas fa-clock text-blue-700 mr-2"></i> Lundi - Dimanche: 7h30 - 20h</li>
